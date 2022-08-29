@@ -45,7 +45,7 @@ public class Main {
 	public static boolean draw_offer;
 	//
 	public static boolean first_time_connection = true;
-	public static String end_game;
+	public static gui.EndGame end_game;
 
 	public static void main(String[] args) {
 		new gui.Main_Menu();
@@ -85,7 +85,13 @@ public class Main {
 		other_stalement = false;
 		//
 		first_time_connection = true;
-		end_game = "";
+		try {
+		end_game.stop();
+		end_game.f.dispose();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		gui.Bord.reset_values();
 	}
 }

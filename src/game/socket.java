@@ -9,8 +9,10 @@ import java.net.Socket;
 public class socket {
 	public static DataInputStream in = null;
 	static DataOutputStream out = null;
+	public static ReadLine r;
 	public static String line = "";
 
+	@SuppressWarnings("deprecation")
 	public socket() {
 		try {
 			game.Main.s = new Socket("127.0.0.1", Main.port);
@@ -19,7 +21,15 @@ public class socket {
 			out = new DataOutputStream(game.Main.s.getOutputStream());
 
 			// game.Main.s.setSoTimeout(Main.timeout);
-			new ReadLine();
+			try {
+				r.stop();
+				
+			}
+			catch (Exception e) {
+			}
+			
+			
+		r=	new ReadLine();
 
 		} catch (Exception ee) {
 			ee.printStackTrace();

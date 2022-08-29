@@ -66,7 +66,7 @@ public class Upgrade extends JFrame {
 
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
-		panel.setBounds(275, 275, 400, 300);
+		panel.setBounds(280, 275, 400, 300);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		///////

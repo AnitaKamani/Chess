@@ -3,6 +3,7 @@ package game;
 import java.io.IOException;
 
 import gui.Draw_Offer;
+import gui.Main_Menu;
 import gui.New_Game;
 
 public class ReadLine extends Thread {
@@ -12,6 +13,7 @@ public class ReadLine extends Thread {
 		start();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void run() {
 
 		while (online == true) {
@@ -82,29 +84,30 @@ public class ReadLine extends Thread {
 					//// 1 request// 2 request accepted//0 request declined
 
 					if (socket.line.charAt(9) - '0' == 1) {
-						Draw_Offer.mode=2;
+						Draw_Offer.mode = 2;
 						game.Main.offer = new Draw_Offer();
 					}
 
 					else if (socket.line.charAt(9) - '0' == 2) {
 						game.Main.offer.helper_frame.dispose();
 						game.Main.offer.dispose();
-				
-						game.Main.draw_offer=true;
+
+						game.Main.draw_offer = true;
 						/// TODO The_End();
 						// new The_End();
 					} else if (socket.line.charAt(9) - '0' == 0) {
 
 						game.Main.offer.helper_frame.dispose();
 						game.Main.offer.dispose();
-					
+
 					}
 
 				}
 
 				else if (socket.line.startsWith("!@~$404#")) {
-					/////// timeout or <<anything>> gone wrong
-
+					game.Main.bord.dispose();
+					new Main_Menu();
+					stop();
 				}
 
 			} catch (IOException e) {

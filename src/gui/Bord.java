@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,8 +26,15 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import game.socket;
+import javax.swing.JTextField;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class Bord extends JFrame implements MouseListener {
 	public static int i1 = -1, j1 = -1, i2 = -1, j2 = -1; // clicked first and second
@@ -44,9 +52,11 @@ public class Bord extends JFrame implements MouseListener {
 	private static JLabel other_timer_label = new JLabel("00:00");
 	private static JLabel waiting_gif_label = new JLabel("");
 	private static JPanel tiles_panel = new JPanel();
+	private static JPanel tiles_panel_1;
 	private static JPanel notification_panel = new JPanel();
 	private static JPanel check_state_panel = new JPanel();
 	private static JPanel eated_pieces_panel = new JPanel();
+	private static JPanel eated_pieces_panel_1;
 	private static Timer time_timer;
 	private static Timer animation_timer;
 	public static String Type;
@@ -55,10 +65,13 @@ public class Bord extends JFrame implements MouseListener {
 	public static int upgrade = -1;
 	private static int castling = 0;
 	public static String sending_line = "";
+	public static String history = "";
 	public static NumberFormat format;
+	public static int counter = 0;
 	JPanel contentPane;
 	private final Action offering_draw = new DrawOffer();
 	private final Action givving_time = new TimeGivness();
+	public static JTextArea history_jta;
 
 	/**
 	 * Launch the application.
@@ -89,8 +102,8 @@ public class Bord extends JFrame implements MouseListener {
 			game.Main.my_name = "P2";
 			game.Main.other_name = "P1";
 		}
-		
-		new EndGame();
+
+		game.Main.end_game = new EndGame();
 		reset_game_table();// resetting the game table
 		Bord.king_position();
 		for (int i = 0; i < 8; i++) {
@@ -218,11 +231,51 @@ public class Bord extends JFrame implements MouseListener {
 		other_buttons.setBounds(880, 915, 40, 115);
 		getContentPane().add(other_buttons);
 		other_buttons.setLayout(null);
+		///////
+
+		////
+		JPanel history_panel = new JPanel();
+		history_panel.setBounds(425, 925, 265, 100);
+		history_panel.setBorder(null);
+		getContentPane().add(history_panel);
+		history_panel.setOpaque(false);
+		history_panel.setLayout(new BoxLayout(history_panel, BoxLayout.X_AXIS));
+		history_panel.setBackground(new Color(0, 0, 0, 0));
+
+		history_jta = new JTextArea("");
+		history_jta.setOpaque(false);
+		history_panel.add(history_jta);
+		history_jta.setEditable(false);
+		history_jta.setForeground(new Color(255, 254, 254));
+		history_jta.setBorder(null);
+		history_jta.setFont(new Font("Segoe Print", Font.PLAIN, 20));
+		history_jta.setHighlighter(null);
+		///////////
+		//////////
+		////////
+		JScrollPane sp = new JScrollPane(history_jta, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		sp.setBackground(new Color(0, 0, 0, 0));
+		sp.setOpaque(false);
+		sp.getViewport().setOpaque(false);
+		sp.setBorder(null);
+		UIManager.put("ScrollBar.thumb", new ColorUIResource(new Color(0, 0, 0)));
+		UIManager.put("ScrollBar.track", (new Color(50, 50, 50)));
+		UIManager.put("ScrollBar.thumbShadow", (new Color(60, 60, 60)));
+		UIManager.put("ScrollBar.thumbDarkShadow", (new Color(40, 40, 40)));
+		UIManager.put("ScrollBar.thumbHighlight", (new Color(80, 80, 80)));
+
+		sp.getVerticalScrollBar().setUI(new BasicScrollBarUI());
+		history_panel.add(sp);
+		/////////
 		///
 		////
 		JButton offer_draw_button = new JButton("");
 		offer_draw_button.setAction(offering_draw);
-		offer_draw_button.setIcon(new ImageIcon(Bord.class.getResource("/background/offer_draw.png")));
+		if (game.Main.app_mode != 0)
+			offer_draw_button.setIcon(new ImageIcon(Bord.class.getResource("/background/offer_draw.png")));
+		else
+			offer_draw_button.setIcon(new ImageIcon(Bord.class.getResource("/background/home.png")));
 		offer_draw_button.setBorderPainted(false);
 		offer_draw_button.setOpaque(false);
 		offer_draw_button.setContentAreaFilled(false);
@@ -234,7 +287,7 @@ public class Bord extends JFrame implements MouseListener {
 		/////
 		JButton give_time_button = new JButton("");
 		give_time_button.setAction(givving_time);
-		give_time_button.setIcon(new ImageIcon(Bord.class.getResource("/background/Plus2.png")));
+		give_time_button.setIcon(new ImageIcon(Bord.class.getResource("/background/Plus.png")));
 		give_time_button.setBorderPainted(false);
 		give_time_button.setOpaque(false);
 		give_time_button.setContentAreaFilled(false);
@@ -363,7 +416,7 @@ public class Bord extends JFrame implements MouseListener {
 			/////// end condition
 			///////////////////////////////////////////////// this will also change the
 			/////// turns
-			
+
 			if (game.Main.turn == 1) {
 				game.Main.my_remaining_time = remaining;
 			} else if (game.Main.turn == 0) {
@@ -489,27 +542,28 @@ public class Bord extends JFrame implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent eve) {
 		if (game.Main.my_remaining_time > 10 && game.Main.other_remaining_time > 10 && remaining > 10) {
-			if (game.Main.app_mode == 0 || game.Main.app_mode != 0 && game.Main.turn == 1) {
-				for (int i = 0; i < 8; i++)
-					for (int j = 0; j < 8; j++) {
-						if (eve.getSource() == tiles[i][j]) {
-							if (game.Main.table_pieces[i][j] != null) {
-								if ((game.Main.turn == 1 && game.Main.table_pieces[i][j].color == game.Main.my_color
-										|| game.Main.turn == 0
-										&& game.Main.table_pieces[i][j].color != game.Main.my_color)
-										&& !board.pieces.Pieces.move_posibility(game.Main.table_pieces[i][j])
-										.isEmpty()) {
-									ie = i;
-									je = j;
-									if (ie != i1 || je != j1) {
-										notification_labels[i][j].setIcon(
-												new ImageIcon(Bord.class.getResource("/background/Hover.png")));
+			if (animation_lock == false)
+				if (game.Main.app_mode == 0 || game.Main.app_mode != 0 && game.Main.turn == 1) {
+					for (int i = 0; i < 8; i++)
+						for (int j = 0; j < 8; j++) {
+							if (eve.getSource() == tiles[i][j]) {
+								if (game.Main.table_pieces[i][j] != null) {
+									if ((game.Main.turn == 1 && game.Main.table_pieces[i][j].color == game.Main.my_color
+											|| game.Main.turn == 0
+											&& game.Main.table_pieces[i][j].color != game.Main.my_color)
+											&& !board.pieces.Pieces.move_posibility(game.Main.table_pieces[i][j])
+											.isEmpty()) {
+										ie = i;
+										je = j;
+										if (ie != i1 || je != j1) {
+											notification_labels[i][j].setIcon(
+													new ImageIcon(Bord.class.getResource("/background/Hover.png")));
+										}
 									}
 								}
 							}
 						}
-					}
-			}
+				}
 		}
 
 	}
@@ -572,9 +626,10 @@ public class Bord extends JFrame implements MouseListener {
 			upgrade = 0;
 		}
 
-		if (game.Main.table_pieces[ia][ja].name == 'K' && Math.abs(jb - ja) == 2)
-			castling = 1;
+		if (game.Main.table_pieces[ia][ja].name == 'K' && Math.abs(jb - ja) == 2) {
 
+			castling = 1;
+		}
 		if (castling != 2) {
 			for (int w = 0; w < 8; w++)
 				for (int z = 0; z < 8; z++) {
@@ -583,18 +638,31 @@ public class Bord extends JFrame implements MouseListener {
 				}
 		}
 		if (castling == 0) {
-			last_and_check_state_labels[i1][j1]
-					.setIcon(new ImageIcon(Bord.class.getResource("/background/Last_Move.png")));
-			last_and_check_state_labels[i2][j2]
-					.setIcon(new ImageIcon(Bord.class.getResource("/background/Last_Move.png")));
+			if ((i1 + j1) % 2 == 0)
+				last_and_check_state_labels[i1][j1]
+						.setIcon(new ImageIcon(Bord.class.getResource("/background/bmove.png")));
+			else
+				last_and_check_state_labels[i1][j1]
+						.setIcon(new ImageIcon(Bord.class.getResource("/background/wmove.png")));
+
+			if ((i2 + j2) % 2 == 0)
+				last_and_check_state_labels[i2][j2]
+						.setIcon(new ImageIcon(Bord.class.getResource("/background/bmove.png")));
+			else
+				last_and_check_state_labels[i2][j2]
+						.setIcon(new ImageIcon(Bord.class.getResource("/background/wmove.png")));
 		} else {
-			last_and_check_state_labels[ib][jb]
-					.setIcon(new ImageIcon(Bord.class.getResource("/background/Last_Move.png")));
+			if ((ib + jb) % 2 == 0)
+				last_and_check_state_labels[ib][jb]
+						.setIcon(new ImageIcon(Bord.class.getResource("/background/bmove.png")));
+			else
+				last_and_check_state_labels[ib][jb]
+						.setIcon(new ImageIcon(Bord.class.getResource("/background/wmove.png")));
 		}
 
 		// now moving the piece
 		Animation_Listner listner = new Animation_Listner();
-		animation_timer = new Timer(1, listner);
+		animation_timer = new Timer(3, listner);
 		if (game.Main.my_color == 1) {
 			xa = ja * 100;
 			ya = ia * 100;
@@ -641,6 +709,12 @@ public class Bord extends JFrame implements MouseListener {
 
 	public static void eaten_list_icon() {
 		if (castling == 0) {
+
+			String part1 = "1Q06";
+			String abc = "abcdefgh";
+			part1 = (game.Main.table_pieces[i1][j1].color == 1 ? "W" : "B") + game.Main.table_pieces[i1][j1].name
+					+ abc.charAt(j1) + (8 - i1);
+
 			if (game.Main.table_pieces[i2][j2] != null) {
 				if (game.Main.turn == 1) {
 					game.Main.eaten_me++;
@@ -653,6 +727,14 @@ public class Bord extends JFrame implements MouseListener {
 							.setIcon(new ImageIcon(game.Main.table_pieces[i2][j2].image30));
 					game.Main.eaten_list[1][game.Main.eaten_other] = game.Main.table_pieces[i2][j2].defenition;
 				}
+
+				history = part1 + " * " + (game.Main.table_pieces[i2][j2].color == 1 ? "W" : "B")
+						+ game.Main.table_pieces[i2][j2].name +abc.charAt(j2) + (8 - i2);
+			}
+
+			else {
+				history = part1 + " - " + abc.charAt(j2) + (8 - i2);
+
 			}
 		}
 	}
@@ -691,7 +773,7 @@ public class Bord extends JFrame implements MouseListener {
 				try {
 					pieces_labels[ii][jj].setBounds(xb, yb, 100, 100);
 					animation_timer.stop();
-
+					counter++;
 					if (castling == 0) {
 						eaten_list_icon();
 						Bord.clone(i1, j1, i2, j2);
@@ -699,11 +781,15 @@ public class Bord extends JFrame implements MouseListener {
 						change_turn(i1, j1, i2, j2);
 						game.Main.turn = (game.Main.turn + 1) % 2;
 						done();
+						
+						history_jta.setText(history_jta.getText() + counter + ".  " + history + "\n");
 						animation_lock = false;
 
 					}
 
 					else if (castling == 1) {
+						history = game.Main.table_pieces[i1][j1].color == 1 ? "W" : "B";
+
 						Bord.clone(i1, j1, i2, j2);
 						king_position();
 						change_turn(i1, j1, i2, j2);
@@ -715,7 +801,15 @@ public class Bord extends JFrame implements MouseListener {
 						castling = 0;
 						king_position();
 						game.Main.turn = (game.Main.turn + 1) % 2;
+
+						if (j2 < j1)
+							history = history + " o - o";
+
+						else
+							history = history + " o - o - o";
 						done();
+						
+						history_jta.setText(history_jta.getText() + counter + ".  " + history + "\n");
 						animation_lock = false;
 					}
 
@@ -763,7 +857,7 @@ public class Bord extends JFrame implements MouseListener {
 		}
 
 		String k;
-		
+
 		if (game.Main.turn == 1) {
 			k = game.Main.my_king_position;
 		} else {
@@ -819,14 +913,14 @@ public class Bord extends JFrame implements MouseListener {
 		if (statement.substring(0, 1).equals("1"))// stalemate
 		{
 			System.out.println("Stalemate");
-			game.Main.end_game = statement;
+			// game.Main.end_game = statement;
 		} else if (statement.substring(0, 1).equals("2"))// check
 		{
 			System.out.println("Check");
 		} else if (statement.substring(0, 1).equals("3"))// checkmate
 		{
 			System.out.println("Checkmate");
-			game.Main.end_game = statement;
+			// game.Main.end_game = statement;
 		}
 		//////////// this is the end of one move
 		game.Main.move_count++;
@@ -850,6 +944,7 @@ public class Bord extends JFrame implements MouseListener {
 			System.out.println("not enough sorce");
 
 		i1 = j1 = i2 = j2 = -1;
+	
 	}
 
 	public static String end_check() {
@@ -980,11 +1075,12 @@ public class Bord extends JFrame implements MouseListener {
 		my_timer_label = new JLabel("00:00");
 		other_timer_label = new JLabel("00:00");
 		waiting_gif_label = new JLabel("");
-		tiles_panel = new JPanel();
+		tiles_panel_1 = new JPanel();
 		notification_panel = new JPanel();
 		check_state_panel = new JPanel();
-		eated_pieces_panel = new JPanel();
+		eated_pieces_panel_1 = new JPanel();
 		time_timer = null;
+		counter = 0;
 		animation_timer = null;
 		layeredPane = new JLayeredPane();
 		remaining = game.Main.my_remaining_time;
@@ -994,7 +1090,11 @@ public class Bord extends JFrame implements MouseListener {
 
 	private class DrawOffer extends AbstractAction {
 		public DrawOffer() {
-			putValue(SHORT_DESCRIPTION, "Offer Draw");
+
+			if (game.Main.app_mode != 0)
+				putValue(SHORT_DESCRIPTION, "Offer Draw");
+			else
+				putValue(SHORT_DESCRIPTION, "Main Menu");
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -1088,5 +1188,4 @@ public class Bord extends JFrame implements MouseListener {
 		Type = "";
 		after();
 	}
-
 }

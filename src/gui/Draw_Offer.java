@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import game.socket;
+import properties.new_piece_test;
 
 public class Draw_Offer extends JFrame {
 	public static int mode = 4;
@@ -179,6 +180,7 @@ public class Draw_Offer extends JFrame {
 
 				helper_frame.dispose();
 				game.Main.bord.dispose();
+				new Main_Menu();
 				///TODO
 			}
 

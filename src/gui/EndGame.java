@@ -17,13 +17,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class EndGame extends Thread {
+	public static JFrame f = new JFrame();
 
 	public EndGame() {
 		this.start();
 	}
 
 	public void run() {
-		JFrame f = new JFrame();
+		
 		f.setUndecorated(true);
 		f.setBackground(new Color(0, 0, 0, 0));
 
@@ -32,9 +33,9 @@ public class EndGame extends Thread {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setBounds(480, 0, 960, 1030);
 		if (game.Main.app_mode == 1) {
-			f.setBounds(new Rectangle(0, 0, 900, 1030));
+			f.setBounds(new Rectangle(0, 0, 960, 1030));
 		} else if (game.Main.app_mode == 2) {
-			f.setBounds(new Rectangle(960, 0, 900, 1030));
+			f.setBounds(new Rectangle(960, 0, 960, 1030));
 		}
 		f.getContentPane().setLayout(null);
 
@@ -104,8 +105,8 @@ public class EndGame extends Thread {
 		}
 
 		while (game.Main.my_stalement == false && game.Main.other_stalement == false
-				&& game.Main.my_remaining_time > 500 && game.Main.other_remaining_time > 500
-				&& gui.Bord.remaining > 500) {
+				&& game.Main.my_remaining_time > 500 && game.Main.other_remaining_time > 500 && gui.Bord.remaining > 500
+				&& game.Main.draw_offer == false) {
 
 			try {
 				sleep(100);
@@ -129,16 +130,26 @@ public class EndGame extends Thread {
 
 		else if (game.Main.other_stalement == true && game.Main.my_stalement == true)
 			result_label.setText("Not enough force");
-		else if (game.Main.draw_offer == true)
-			result_label.setText("this game is over due to draw offer");
 
 		else if (game.Main.my_remaining_time < 500)
 			result_label.setText(game.Main.my_name + "'s time is over");
 		else if (game.Main.other_remaining_time < 500)
 			result_label.setText(game.Main.other_name + "'s time is over");
 
-		f.setVisible(true);
+		else if (game.Main.draw_offer == true) {
+			result_label.setText("this game is over due to draw offer");
+			if (game.Main.app_mode == 0)
 
+				f.dispose();
+
+		}
+
+		try {
+			f.setVisible(true);
+		} catch (Exception c) {
+
+			f.dispose();
+		}
 	}
 
 }
