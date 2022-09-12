@@ -162,7 +162,7 @@ public class Upgrade extends JFrame {
 		///////
 		///////
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(Upgrade.class.getResource("/background/upgrade_background.png")));
+		lblNewLabel.setIcon(new ImageIcon("img/background/upgrade_background.png"));
 		lblNewLabel.setOpaque(true);
 		lblNewLabel.setBounds(0, 0, 400, 300);
 		panel.add(lblNewLabel);
@@ -171,7 +171,7 @@ public class Upgrade extends JFrame {
 		/////
 		///////
 		JLabel helper_label = new JLabel("");
-		helper_label.setIcon(new ImageIcon(Draw_Offer.class.getResource("/background/upgrade_help.png")));
+		helper_label.setIcon(new ImageIcon("img/background/upgrade_help.png"));
 		helper_label.setBounds(0, 0, 960, 1030);
 		helper_frame.getContentPane().add(helper_label);
 		///////////

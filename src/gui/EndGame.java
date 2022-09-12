@@ -94,7 +94,7 @@ public class EndGame extends Thread {
 		f.getContentPane().add(exit_button);
 
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(EndGame.class.getResource("/background/hole.png")));
+		label.setIcon(new ImageIcon("img/background/hole.png"));
 		label.setBounds(0, 0, 960, 1030);
 		f.getContentPane().add(label);
 

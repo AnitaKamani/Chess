@@ -91,7 +91,7 @@ public class New_Game extends JFrame {
 		getContentPane().add(main_menu_button);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(New_Game.class.getResource("/background/menu_background.png")));
+		lblNewLabel.setIcon(new ImageIcon("img/background/menu_background.png"));
 		lblNewLabel.setBounds(0, 0, 960, 1030);
 		getContentPane().add(lblNewLabel);
 		setVisible(true);
