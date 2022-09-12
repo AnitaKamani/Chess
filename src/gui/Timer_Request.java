@@ -148,7 +148,7 @@ public class Timer_Request extends JFrame {
 		contentPane.add(ok_button);
 
 		JLabel back_label = new JLabel("");
-		back_label.setIcon(new ImageIcon(Timer_Request.class.getResource("/background/menu_background.png")));
+		back_label.setIcon(new ImageIcon("img/background/menu_background.png"));
 		back_label.setBounds(0, 0, 960, 1030);
 		contentPane.add(back_label);
 

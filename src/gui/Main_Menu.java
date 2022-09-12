@@ -88,7 +88,7 @@ public class Main_Menu extends JFrame {
 		getContentPane().add(exit_button);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(Main_Menu.class.getResource("/background/menu_background.png")));
+		lblNewLabel.setIcon(new ImageIcon("img/background/menu_background.png"));
 		lblNewLabel.setBounds(0, 0, 960, 1030);
 		getContentPane().add(lblNewLabel);
 		setVisible(true);

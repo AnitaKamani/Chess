@@ -185,13 +185,13 @@ public class Bord extends JFrame implements MouseListener {
 		getContentPane().setLayout(null);
 		JLabel background = new JLabel("");
 		background.setBorder(null);
-		background.setIcon(new ImageIcon(Bord.class.getResource("/background/main_board.png")));
+		background.setIcon(new ImageIcon("img/background/main_board.png"));
 		JLabel background_numbs = new JLabel("");
 		background_numbs
-		.setIcon(new ImageIcon(Bord.class.getResource("/background/board_background_white_player.png")));
+		.setIcon(new ImageIcon("img/background/board_background_white_player.png"));
 		if (game.Main.my_color == 0)
 			background_numbs
-			.setIcon(new ImageIcon(Bord.class.getResource("/background/board_background_black_player.png")));
+			.setIcon(new ImageIcon("img/background/board_background_black_player.png"));
 		game.Main.other_remaining_time = (long) (game.Main.m * 60 * 1000);
 		int minutes2 = (int) (game.Main.other_remaining_time / 60000);
 		int seconds2 = (int) ((game.Main.other_remaining_time % 60000) / 1000);
@@ -273,9 +273,9 @@ public class Bord extends JFrame implements MouseListener {
 		JButton offer_draw_button = new JButton("");
 		offer_draw_button.setAction(offering_draw);
 		if (game.Main.app_mode != 0)
-			offer_draw_button.setIcon(new ImageIcon(Bord.class.getResource("/background/offer_draw.png")));
+			offer_draw_button.setIcon(new ImageIcon("img/background/offer_draw.png"));
 		else
-			offer_draw_button.setIcon(new ImageIcon(Bord.class.getResource("/background/home.png")));
+			offer_draw_button.setIcon(new ImageIcon("img/background/home.png"));
 		offer_draw_button.setBorderPainted(false);
 		offer_draw_button.setOpaque(false);
 		offer_draw_button.setContentAreaFilled(false);
@@ -287,7 +287,7 @@ public class Bord extends JFrame implements MouseListener {
 		/////
 		JButton give_time_button = new JButton("");
 		give_time_button.setAction(givving_time);
-		give_time_button.setIcon(new ImageIcon(Bord.class.getResource("/background/Plus.png")));
+		give_time_button.setIcon(new ImageIcon("img/background/Plus.png"));
 		give_time_button.setBorderPainted(false);
 		give_time_button.setOpaque(false);
 		give_time_button.setContentAreaFilled(false);
@@ -306,14 +306,14 @@ public class Bord extends JFrame implements MouseListener {
 		//
 		//// waiting gif
 		/////
-		waiting_gif_label.setIcon(new ImageIcon(Bord.class.getResource("/background/ring.gif")));
+		waiting_gif_label.setIcon(new ImageIcon("img/background/ring.gif"));
 		waiting_gif_label.setBounds(44, 925, 40, 40);
 		getContentPane().add(waiting_gif_label);
 		///////////////
 		////// shwoing king as each side color
 		///
 		JLabel black_king_color = new JLabel("");
-		black_king_color.setIcon(new ImageIcon(Bord.class.getResource("/background/Black_King2.png")));
+		black_king_color.setIcon(new ImageIcon("img/background/Black_King2.png"));
 		black_king_color.setBounds(96, 926, 40, 40);
 		getContentPane().add(black_king_color);
 		JLabel other_name = new JLabel(game.Main.other_name);
@@ -334,7 +334,7 @@ public class Bord extends JFrame implements MouseListener {
 		//////
 		////
 		JLabel white_king_color = new JLabel("");
-		white_king_color.setIcon(new ImageIcon(Bord.class.getResource("/background/White_King2.png")));
+		white_king_color.setIcon(new ImageIcon("img/background/White_King2.png"));
 		white_king_color.setBounds(96, 980, 40, 40);
 		getContentPane().add(white_king_color);
 		////
@@ -520,16 +520,16 @@ public class Bord extends JFrame implements MouseListener {
 									j1 = j;
 									if ((i + j) % 2 == 0)
 										notification_labels[i][j].setIcon(
-												new ImageIcon(Bord.class.getResource("/background/WClicked.png")));
+												new ImageIcon("img/background/WClicked.png"));
 									else
 										notification_labels[i][j].setIcon(
-												new ImageIcon(Bord.class.getResource("/background/BClicked.png")));
+												new ImageIcon("img/background/BClicked.png"));
 									for (String x : board.pieces.Pieces
 											.move_posibility(game.Main.table_pieces[i1][j1])) {
 										int ii = Integer.parseInt(x.substring(0, x.indexOf(",")));
 										int jj = Integer.parseInt(x.substring(x.indexOf(",") + 1, x.length()));
 										notification_labels[i + ii][j + jj].setIcon(
-												new ImageIcon(Bord.class.getResource("/background/Options.png")));
+												new ImageIcon("img/background/Options.png"));
 									}
 								}
 							}
@@ -557,7 +557,7 @@ public class Bord extends JFrame implements MouseListener {
 										je = j;
 										if (ie != i1 || je != j1) {
 											notification_labels[i][j].setIcon(
-													new ImageIcon(Bord.class.getResource("/background/Hover.png")));
+													new ImageIcon("img/background/Hover.png"));
 										}
 									}
 								}
@@ -640,24 +640,24 @@ public class Bord extends JFrame implements MouseListener {
 		if (castling == 0) {
 			if ((i1 + j1) % 2 == 0)
 				last_and_check_state_labels[i1][j1]
-						.setIcon(new ImageIcon(Bord.class.getResource("/background/bmove.png")));
+						.setIcon(new ImageIcon("img/background/bmove.png"));
 			else
 				last_and_check_state_labels[i1][j1]
-						.setIcon(new ImageIcon(Bord.class.getResource("/background/wmove.png")));
+						.setIcon(new ImageIcon("img/background/wmove.png"));
 
 			if ((i2 + j2) % 2 == 0)
 				last_and_check_state_labels[i2][j2]
-						.setIcon(new ImageIcon(Bord.class.getResource("/background/bmove.png")));
+						.setIcon(new ImageIcon("img/background/bmove.png"));
 			else
 				last_and_check_state_labels[i2][j2]
-						.setIcon(new ImageIcon(Bord.class.getResource("/background/wmove.png")));
+						.setIcon(new ImageIcon("img/background/wmove.png"));
 		} else {
 			if ((ib + jb) % 2 == 0)
 				last_and_check_state_labels[ib][jb]
-						.setIcon(new ImageIcon(Bord.class.getResource("/background/bmove.png")));
+						.setIcon(new ImageIcon("img/background/bmove.png"));
 			else
 				last_and_check_state_labels[ib][jb]
-						.setIcon(new ImageIcon(Bord.class.getResource("/background/wmove.png")));
+						.setIcon(new ImageIcon("img/background/wmove.png"));
 		}
 
 		// now moving the piece
@@ -928,11 +928,11 @@ public class Bord extends JFrame implements MouseListener {
 			if (statement.substring(1, 2).equals("1"))
 				last_and_check_state_labels[Integer.parseInt(game.Main.my_king_position.substring(0, 1))][Integer
 				                                                                                          .parseInt(game.Main.my_king_position.substring(1, 2))]
-				                                                                                        		  .setIcon(new ImageIcon(Bord.class.getResource("/background/Check.png")));
+				                                                                                        		  .setIcon(new ImageIcon("img/background/Check.png"));
 			else
 				last_and_check_state_labels[Integer.parseInt(game.Main.other_king_position.substring(0, 1))][Integer
 				                                                                                             .parseInt(game.Main.other_king_position.substring(1, 2))]
-				                                                                                            		 .setIcon(new ImageIcon(Bord.class.getResource("/background/Check.png")));
+				                                                                                            		 .setIcon(new ImageIcon("img/background/Check.png"));
 		}
 		////// now we start the timer for other person
 		if (game.Main.move_count >= 2 && !statement.substring(0, 1).equals("3")

@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import game.socket;
-import properties.new_piece_test;
 
 public class Draw_Offer extends JFrame {
 	public static int mode = 4;
@@ -127,14 +126,14 @@ public class Draw_Offer extends JFrame {
 		/////
 		///////
 		JLabel helper_label = new JLabel("");
-		helper_label.setIcon(new ImageIcon(Draw_Offer.class.getResource("/background/offer_help.png")));
+		helper_label.setIcon(new ImageIcon("img/background/offer_help.png"));
 		helper_label.setBounds(0, 0, 960, 1030);
 		helper_frame.getContentPane().add(helper_label);
 		///////////
 		//////////
 		///////
 		JLabel back_ground_label = new JLabel("");
-		back_ground_label.setIcon(new ImageIcon(Draw_Offer.class.getResource("/background/offer_background.png")));
+		back_ground_label.setIcon(new ImageIcon("img/background/offer_background.png"));
 		back_ground_label.setBounds(0, 0, 600, 200);
 		offer_draw.add(back_ground_label);
 
